@@ -1,0 +1,91 @@
+{% extends "template.html" %}
+{% block conteudo %}
+        <h1>Lista de clientes</h1>
+        <button id="logout" class="logout-button"><a href="{{ url_for('logout') }}">Sair</a></button>
+        
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+            
+        <form method="POST" action="{{ url_for('customers') }}">
+            <input type="hidden" name="action" value="create">
+            <h2>Novo cliente</h2>
+            <label for="company">Empresa:</label>
+            <input type="text" name="company" id="company" required>
+            <label for="first_name">Nome:</label>
+            <input type="text" name="first_name" id="first_name" required>
+            <label for="last_name">Sobrenome:</label>
+            <input type="text" name="last_name" id="last_name" required>
+            <label for="job_title">Cargo:</label>
+            <input type="text" name="job_title" id="job_title" required>
+            <label for="address">Endereço:</label>
+            <input type="text" name="address" id="address" required>
+            <button class="criar-button" type="submit">Criar</button>
+        </form>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Empresa</th>
+                    <th>Nome</th>
+                    <th>Sobrenome</th>
+                    <th>Cargo</th>
+                    <th>Endereço</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                    <tr>
+                        <td>{{ customer[0] }}</td>
+                        <td>{{ customer[1] }}</td>
+                        <td>{{ customer[2] }}</td>
+                        <td>{{ customer[3] }}</td>
+                        <td>{{ customer[4] }}</td>
+                        <td>{{ customer[5] }}</td>
+                        <td>
+                            <button class="edit-button" onclick="toggleUpdateForm('{{ customer[0] }}')">Editar</button>
+
+                            <form method="POST" action="{{ url_for('customers') }}">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="id" value="{{ customer[0] }}">
+                                <button class="delete-button">Excluir</button>
+                            </form>
+                            <form method="POST" action="{{ url_for('customers') }}" id="update-form-{{ customer[0] }}" class="hidden">
+                                <input type="hidden" name="action" value="update">
+                                <input type="hidden" name="id" value="{{ customer[0] }}">
+                                <div>
+                                    <label for="update-company">Empresa:</label>
+                                    <input type="text" name="company" id="update-company" value="{{ customer[1] }}" required>
+                                </div>
+                                <div>
+                                    <label for="update-first_name">Nome:</label>
+                                    <input type="text" name="first_name" id="update-first_name" value="{{ customer[2] }}" required>
+                                </div>
+                                <div>
+                                    <label for="update-last_name">Sobrenome:</label>
+                                    <input type="text" name="last_name" id="update-last_name" value="{{ customer[3] }}" required>
+                                </div>
+                                <div>
+                                    <label for="update-job_title">Cargo:</label>
+                                    <input type="text" name="job_title" id="update-job_title" value="{{ customer[4] }}" required>
+                                </div>
+                                <div>
+                                    <label for="update-address">Endereço:</label>
+                                    <input type="text" name="address" id="update-address" value="{{ customer[5] }}" required>
+                                </div>
+                                <button class="update-button" type="submit">Atualizar</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+{% endblock %}

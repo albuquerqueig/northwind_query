@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Quick Query</title>
+            <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+            <style>
+                .hidden {
+                    display: none;
+                }
+            </style>
+            <script>
+                function toggleUpdateForm(id) {
+                    var updateForm = document.getElementById('update-form-' + id);
+                    updateForm.classList.toggle('hidden');
+                }
+            </script>
+    </head>
+    <header>
+        <img src="../static/img/pesquisa-de-dados.png"><span>   Quick Query</span>
+    </header>
+    <body>
+        <div class="container">
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul id="messages" class="list-unstyled">
+                    {% for message in messages %}
+                        <li class="alert alert-success">{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+
+            <div class="page-header">
+                <h1>{{ title }}</h1>
+            </div>
+
+                {% block conteudo %} {% endblock %}
+
+        </div>
+      
+    </body>
+    <footer>
+        by @albuquerqueig
+    </footer>
+</html>
